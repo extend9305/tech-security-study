@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- mybatis-3-mapper.dtd에 주목 -->
+<mapper namespace="com.dong.tech.mapper.MemberMapper">
+    <select id="count" resultType="int">
+        select count(*) from MEMBER
+    </select>
+    <select id="findAll" resultType="com.dong.tech.domain.Member">
+        select * from MEMBER
+    </select>
+    <select id="findById" parameterType="String" resultType="com.dong.tech.domain.Member">
+        select
+              SEQ
+             ,USER_ID AS ID
+             ,EMAIL
+             ,PWD
+             ,NAME
+        from MEMBER where USER_ID = #{id}
+    </select>
+    <select id="findByName" resultType="com.dong.tech.domain.Member">
+        select * from MEMBER where NAME = #{username}
+    </select>
+
+    <insert id="save" parameterType="com.dong.tech.domain.Member" useGeneratedKeys="true" >
+        INSERT INTO MEMBER(
+              USER_ID
+             ,PWD
+             ,NAME
+        ) VALUES (
+             #{id}
+            ,#{pwd}
+            ,#{name}
+        )
+
+
+    </insert>
+</mapper>
