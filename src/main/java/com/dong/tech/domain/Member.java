@@ -4,6 +4,8 @@ import com.dong.tech.mapper.MemberMapper;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.Serializable;
+
 /**
  * The Class Member.
  *
@@ -12,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member implements Serializable {
     private Long seq;
     private String id;
     private String pwd;

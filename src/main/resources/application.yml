@@ -9,6 +9,19 @@ spring:
     username: sa
     password:
     mapper-locations: classpath:/mapper/**/*.xml
+#  redis:
+#    host: localhost
+#    port: 6379
+#  session:
+#    store-type: redis
+
 server:
   port: 3000
 
+jwt:
+  header: Authorization
+  secret: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ==
+  access-token-validity-in-seconds: 6000000 # 10 min
+logging:
+  level:
+    root: debug
