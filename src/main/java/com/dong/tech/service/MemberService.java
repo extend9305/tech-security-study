@@ -3,6 +3,7 @@ package com.dong.tech.service;
 import com.dong.tech.domain.Member;
 import com.dong.tech.mapper.MemberMapper;
 import com.dong.tech.repository.MemberRepository;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +36,8 @@ public class MemberService {
     }
 
     public Long save(String userId, String pwd,String name){ return memberRepository.save(userId,pwd,name);}
+
+    public void saveRefreshToken(Long seq, String refreshToken){ memberRepository.saveRefreshToken(seq,refreshToken);}
+
+    public Member findByRefreshToken(String refreshToken){return memberRepository.findByRefreshToken(refreshToken);}
 }

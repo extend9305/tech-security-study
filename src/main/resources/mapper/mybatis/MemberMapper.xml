@@ -16,10 +16,21 @@
              ,EMAIL
              ,PWD
              ,NAME
+             ,REFRESH_TOKEN
         from MEMBER where USER_ID = #{id}
     </select>
     <select id="findByName" resultType="com.dong.tech.domain.Member">
         select * from MEMBER where NAME = #{username}
+    </select>
+    <select id="findByRefreshToken" parameterType="String" resultType="com.dong.tech.domain.Member">
+        select
+            SEQ
+             ,USER_ID AS ID
+             ,EMAIL
+             ,PWD
+             ,NAME
+             ,REFRESH_TOKEN
+        from MEMBER where REFRESH_TOKEN = #{refreshToken}
     </select>
 
     <insert id="save" parameterType="com.dong.tech.domain.Member" useGeneratedKeys="true" >
@@ -32,7 +43,11 @@
             ,#{pwd}
             ,#{name}
         )
-
-
     </insert>
+    <update id="saveRefreshToken">
+        UPDATE MEMBER SET
+            REFRESH_TOKEN = #{refreshToken}
+        WHERE
+            SEQ = #{seq}
+    </update>
 </mapper>

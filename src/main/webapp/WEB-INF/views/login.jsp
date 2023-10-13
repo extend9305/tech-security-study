@@ -13,7 +13,7 @@
 </form>
 <script>
     const form = document.getElementById('login_form');
-
+    var token = "";
     form.addEventListener('submit', e => {
         e.preventDefault();
 
@@ -30,11 +30,28 @@
             .then(response => {
                 debugger;
                 if (response.status == 200) {
+
+                    sessionStorage.setItem("jwt-access-token",response.headers.get('Authorization'));
+                    sessionStorage.setItem("jwt-refresh-token",response.headers.get('RefreshToken'));
+                    testLogin();
                 } else {
                     alert("로그인 실패")
                 }
             })
             .catch(error => console.log(error))
+        function testLogin(){
+            fetch('/view/dashboard', {
+                method: 'get',
+                headers: {
+                    'Authorization': sessionStorage.getItem("jwt-access-token"),
+                    'RefreshToken': sessionStorage.getItem("jwt-refresh-token"),
+                    'Content-Type': 'application/json'
+                }
+            }).then((json)=>{
+                console.log(json);
+            }).catch(err => console.log(err))
+        }
+
     });
 
 </script>

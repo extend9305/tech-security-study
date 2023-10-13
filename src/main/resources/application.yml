@@ -21,7 +21,11 @@ server:
 jwt:
   header: Authorization
   secret: a2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbXRva2FyaW10b2thcmltdG9rYXJpbQ==
-  access-token-validity-in-seconds: 6000000 # 10 min
+  access-token-validity-in-seconds: 1000 # 10 min
+  refresh-token-validity-in-seconds: 60000 # 10 min
 logging:
   level:
     root: debug
+
+mybatis:
+  con

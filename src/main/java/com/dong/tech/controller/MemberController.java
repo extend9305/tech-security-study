@@ -26,7 +26,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping("user")
+    @GetMapping("/user")
     public List<Member>getMember(){
         return memberService.getAllMember();
     }

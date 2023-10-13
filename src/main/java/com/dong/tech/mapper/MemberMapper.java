@@ -19,4 +19,7 @@ public interface MemberMapper {
     Member findById(@Param("id") String id);
     Member findByName(@Param("username")String username);
     Long save(@Param("id")String id, @Param("pwd")String pwd,@Param("name")String name);
+    void saveRefreshToken(@Param("seq")Long seq, @Param("refreshToken")String refreshToken);
+
+    Member findByRefreshToken(@Param("refreshToken")String refreshToken);
 }

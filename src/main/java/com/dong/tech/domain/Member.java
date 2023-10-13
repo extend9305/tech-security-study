@@ -20,18 +20,20 @@ public class Member implements Serializable {
     private String pwd;
     private String name;
     private String email;
+    private String refreshToken;
 
     @Builder
-    public Member(Long seq, String id, String pwd, String name, String email){
+    public Member(Long seq, String id, String pwd, String name, String email,String refreshToken){
         this.seq = seq;
         this.id = id;
         this.pwd = pwd;
         this.name = name;
         this.email = email;
+        this.refreshToken = refreshToken;
     }
 
     public static Member createUser(String userId, String pwd, PasswordEncoder passwordEncoder){
-        return new Member(null,userId,passwordEncoder.encode(pwd),null,null);
+        return new Member(null,userId,passwordEncoder.encode(pwd),null,null,null);
     }
 
 }
