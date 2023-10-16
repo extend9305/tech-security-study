@@ -27,8 +27,8 @@ public class ViewController {
 
     @GetMapping("/dashboard")
     public String dashboardPage(@AuthenticationPrincipal User user , Model model){
-        model.addAttribute("loginId",user.getUsername());
-        model.addAttribute("loginRoles",user.getAuthorities());
+        //model.addAttribute("loginId",user.getUsername());
+        //model.addAttribute("loginRoles",user.getAuthorities());
         return "dashboard";
     }
 }

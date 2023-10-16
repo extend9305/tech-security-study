@@ -5,6 +5,7 @@ import com.dong.tech.domain.Member;
 import com.dong.tech.dto.MemberDTO;
 import com.dong.tech.service.MemberService;
 import com.dong.tech.service.RegisterMemberService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class AuthorizationController {
     private final TokenProvider tokenProvider;
     private final RegisterMemberService registerMemberService;
     private final MemberService memberService;
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
 //  이렇게 말고 spring security 에 filter 로 로그인 처리.
@@ -56,13 +58,26 @@ public class AuthorizationController {
         String accessToken =  tokenProvider.createAccessToken(authentication);
         String refreshToken =  tokenProvider.createRefreshToken(authentication);
 
+
+
         memberService.saveRefreshToken(member.getSeq(),refreshToken);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization",accessToken);
-        httpHeaders.add("RefreshToken",refreshToken);
 
-        return new ResponseEntity<>(accessToken,httpHeaders, HttpStatus.OK);
+        Cookie accessTokenCookie = new Cookie("Authorization",accessToken);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setMaxAge((int) 2 * 360 * 1000);
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
+
+        Cookie refreshTokenCookie = new Cookie("RefreshToken",refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setMaxAge((int) 2 * 360 * 1000);
+        refreshTokenCookie.setPath("/");
+        response.addCookie(refreshTokenCookie);
+
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -92,7 +92,7 @@ public class TokenProvider implements InitializingBean {
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY,authorities) // 정보 저장
                 .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘 , signature 에 들어갈 secret 값 생성.
-                .setExpiration(new Date(now + this .refreshTokenValidityInMilliseconds)) // expire time 셋팅.
+                .setExpiration(new Date(now + this .refreshTokenValidityInMilliseconds * 10)) // expire time 셋팅.
                 .compact();
 
         return refreshToken;
@@ -151,11 +151,11 @@ public class TokenProvider implements InitializingBean {
     public Boolean refreshTokenValidation(String token){
         if(!validateToken(token)) return false;
 
-        String userId = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-
-        Member member = memberService.findMember(userId);
-
-        return token.equals(member.getRefreshToken());
+        Long seq = memberService.findSeqByRefreshToken(token);
+        if(seq == null){
+            return false;
+        }
+        return true;
     }
 
     public Member getUserIdFromToken(String refreshToken){

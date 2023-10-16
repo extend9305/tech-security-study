@@ -30,10 +30,7 @@
             .then(response => {
                 debugger;
                 if (response.status == 200) {
-
-                    sessionStorage.setItem("jwt-access-token",response.headers.get('Authorization'));
-                    sessionStorage.setItem("jwt-refresh-token",response.headers.get('RefreshToken'));
-                    testLogin();
+                    document.location= "/view/dashboard";
                 } else {
                     alert("로그인 실패")
                 }

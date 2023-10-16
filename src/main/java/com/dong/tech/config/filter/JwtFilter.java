@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 /**
@@ -53,9 +55,8 @@ public class JwtFilter extends GenericFilterBean {
             }else if(StringUtils.hasText(refreshToken)){
                 boolean isRefreshToken = tokenProvider.refreshTokenValidation(refreshToken);
                 if(isRefreshToken){
-                    Member member = tokenProvider.getUserIdFromToken(refreshToken);
 
-                    Authentication authentication =tokenProvider.getAuthenticationByUsername(member.getId());
+                    Authentication authentication = tokenProvider.getAuthentication(refreshToken);
 
                     String newAccessToken =  tokenProvider.createAccessToken(authentication);
 
@@ -73,11 +74,21 @@ public class JwtFilter extends GenericFilterBean {
     }
     // Request Header 에서 토큰 정보를 꺼내오기 위한 메소드
     private String resolveToken(HttpServletRequest request, String type){
-        return request.getHeader(type);
+        final Cookie[] cookies = request.getCookies();
+        if(cookies==null) return null;
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals(type))
+                return cookie.getValue();
+        }
+        return null;
     }
     // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader(AUTHORIATION_HEADER, accessToken);
+        Cookie accessTokenCookie = new Cookie(AUTHORIATION_HEADER,accessToken);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setMaxAge((int) 2 * 360 * 1000);
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
     }
 
 
